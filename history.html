@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta name="description" content="ประวัติการออกกำลังกาย">
+
+    <title>📋 History - Exercise Tracker</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1 class="header__title">
+            📋 ประวัติ
+        </h1>
+        <p class="header__subtitle">ดูประวัติการออกกำลังกาย</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Filter -->
+        <div class="card">
+            <div class="form-group" style="margin-bottom: 0;">
+                <label class="form-label">กรองตามผู้ใช้</label>
+                <select class="form-select" id="userFilter">
+                    <option value="">ทุกคน</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Exercise List -->
+        <div class="card">
+            <div class="card__header">
+                <span class="card__icon">🏃</span>
+                <span>กิจกรรมล่าสุด</span>
+            </div>
+
+            <div id="exerciseList">
+                <div class="spinner"></div>
+            </div>
+
+            <div id="emptyHistory" class="empty-state hidden">
+                <div class="empty-state__icon">📭</div>
+                <p class="empty-state__text">ยังไม่มีประวัติการออกกำลังกาย</p>
+            </div>
+
+            <!-- Exercise Pagination -->
+            <div id="exercisePagination" class="pagination"></div>
+        </div>
+
+        <!-- Weight History List -->
+        <div class="card">
+            <div class="card__header">
+                <span class="card__icon">⚖️</span>
+                <span>ประวัติน้ำหนัก</span>
+            </div>
+
+            <div id="weightList">
+                <div class="spinner"></div>
+            </div>
+
+            <div id="emptyWeightHistory" class="empty-state hidden">
+                <div class="empty-state__icon">📊</div>
+                <p class="empty-state__text">ยังไม่มีประวัติน้ำหนัก</p>
+            </div>
+
+            <!-- Weight Pagination -->
+            <div id="weightPagination" class="pagination"></div>
+        </div>
+    </main>
+
+    <!-- Image Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal__content" style="max-width: 90vw; padding: 0.5rem;">
+            <button class="modal__close" onclick="closeImageModal()"
+                style="position: absolute; right: 1rem; top: 1rem;">✕</button>
+            <img id="modalImage" src="" alt="Exercise" style="width: 100%; border-radius: var(--radius-md);">
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav__inner">
+            <a href="index.html" class="bottom-nav__item">
+                <span class="bottom-nav__icon">🏠</span>
+                <span>หน้าแรก</span>
+            </a>
+            <a href="dashboard.html" class="bottom-nav__item">
+                <span class="bottom-nav__icon">📊</span>
+                <span>แดชบอร์ด</span>
+            </a>
+            <a href="history.html" class="bottom-nav__item bottom-nav__item--active">
+                <span class="bottom-nav__icon">📋</span>
+                <span>ประวัติ</span>
+            </a>
+            <a href="admin.html" class="bottom-nav__item">
+                <span class="bottom-nav__icon">⚙️</span>
+                <span>Admin</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+    <!-- App Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/history.js"></script>
+</body>
+
+</html>

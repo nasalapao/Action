@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta name="description" content="แดชบอร์ดติดตามการออกกำลังกาย">
+
+    <title>📊 Dashboard - Exercise Tracker</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1 class="header__title">
+            📊 Dashboard
+        </h1>
+        <div class="header__subtitle" style="display: flex; align-items: center; gap: 0.5rem;">
+            <div id="userAvatar"
+                style="width: 28px; height: 28px; border-radius: 50%; overflow: hidden; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-size: 0.75rem;">
+            </div>
+            <span id="welcomeText">กำลังโหลด...</span>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- User Stats -->
+        <div class="card">
+            <div class="card__header">
+                <span class="card__icon">📈</span>
+                <span>สถิติของคุณ</span>
+            </div>
+
+            <div class="stats-grid" id="userStats">
+                <div class="stat-item">
+                    <div class="stat-item__value" id="currentStreak">-</div>
+                    <div class="stat-item__label">🔥 Streak</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item__value" id="totalExercises">-</div>
+                    <div class="stat-item__label">📊 ครั้ง</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item__value" id="totalCalories">-</div>
+                    <div class="stat-item__label">🔥 แคล</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item__value" id="longestStreak">-</div>
+                    <div class="stat-item__label">🏆 สูงสุด</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weight Chart -->
+        <div class="card">
+            <div class="card__header">
+                <span class="card__icon">📈</span>
+                <span>กราฟน้ำหนัก</span>
+            </div>
+
+            <div class="chart-container">
+                <canvas id="weightChart"></canvas>
+            </div>
+
+            <div id="noWeightData" class="empty-state hidden">
+                <div class="empty-state__icon">📊</div>
+                <p class="empty-state__text">ยังไม่มีข้อมูลน้ำหนัก<br>บันทึกน้ำหนักเพื่อดูกราฟ</p>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="card">
+            <div class="card__header">
+                <span class="card__icon">🏆</span>
+                <span>Leaderboard</span>
+            </div>
+
+            <ul id="leaderboard" class="leaderboard">
+                <div class="spinner"></div>
+            </ul>
+        </div>
+
+        <!-- Add Exercise Form -->
+        <div class="card">
+            <div class="card__header">
+                <span class="card__icon">➕</span>
+                <span>เพิ่มการออกกำลังกาย</span>
+            </div>
+
+            <form id="exerciseForm">
+                <div class="form-group">
+                    <label class="form-label" for="activity">กิจกรรม</label>
+                    <select class="form-select" id="activity" required>
+                        <option value="">เลือกกิจกรรม</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="distance">ระยะทาง (กิโลเมตร)</label>
+                    <input type="number" class="form-input" id="distance" placeholder="เช่น 6.57" step="any" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="duration">เวลา (นาที)</label>
+                    <input type="number" class="form-input" id="duration" placeholder="เช่น 30" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="calories">แคลอรี่ (kcal)</label>
+                    <input type="number" class="form-input" id="calories" placeholder="เช่น 200" step="any" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">รูปภาพ (ไม่บังคับ)</label>
+                    <div class="file-upload" id="fileUploadArea">
+                        <input type="file" class="file-upload__input" id="imageInput" accept="image/*">
+                        <span class="file-upload__icon">🖼️</span>
+                        <span class="file-upload__text" id="fileUploadText">แตะเพื่อเลือกรูปภาพ</span>
+                        <img id="imagePreview" class="file-upload__preview hidden" alt="Preview">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn--primary" id="submitBtn">
+                    💪 บันทึกการออกกำลังกาย
+                </button>
+            </form>
+        </div>
+
+        <!-- Weight Tracking -->
+        <div class="card">
+            <div class="card__header">
+                <span class="card__icon">⚖️</span>
+                <span>บันทึกน้ำหนัก</span>
+            </div>
+
+            <div class="weight-current">
+                <div class="weight-current__value" id="currentWeight">--</div>
+                <div class="weight-current__unit">kg</div>
+                <div class="weight-current__date" id="weightDate">ยังไม่มีข้อมูล</div>
+            </div>
+
+            <form id="weightForm" class="weight-form">
+                <div class="form-group">
+                    <label class="form-label" for="weightInput">น้ำหนัก (kg)</label>
+                    <input type="number" class="form-input" id="weightInput" placeholder="เช่น 70.5" step="0.1" min="20"
+                        max="300" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">รูปภาพ (ไม่บังคับ)</label>
+                    <div class="file-upload" id="weightFileUploadArea">
+                        <input type="file" class="file-upload__input" id="weightImageInput" accept="image/*">
+                        <span class="file-upload__icon">📷</span>
+                        <span class="file-upload__text" id="weightFileUploadText">แตะเพื่อเลือกรูปภาพ</span>
+                        <img id="weightImagePreview" class="file-upload__preview hidden" alt="Preview">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn--primary" id="weightSubmitBtn">
+                    ⚖️ บันทึกน้ำหนัก
+                </button>
+            </form>
+        </div>
+
+        <!-- Today's Check -->
+        <div id="todayStatus" class="card hidden">
+            <div style="text-align: center; padding: 1rem;">
+                <span style="font-size: 3rem;">✅</span>
+                <p style="margin-top: 0.5rem; color: var(--accent-success);">
+                    คุณออกกำลังกายวันนี้แล้ว!
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav__inner">
+            <a href="index.html" class="bottom-nav__item">
+                <span class="bottom-nav__icon">🏠</span>
+                <span>หน้าแรก</span>
+            </a>
+            <a href="dashboard.html" class="bottom-nav__item bottom-nav__item--active">
+                <span class="bottom-nav__icon">📊</span>
+                <span>แดชบอร์ด</span>
+            </a>
+            <a href="history.html" class="bottom-nav__item">
+                <span class="bottom-nav__icon">📋</span>
+                <span>ประวัติ</span>
+            </a>
+            <a href="admin.html" class="bottom-nav__item">
+                <span class="bottom-nav__icon">⚙️</span>
+                <span>Admin</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+    <!-- App Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>

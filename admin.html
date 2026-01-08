@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f0f1a">
+    <meta name="description" content="จัดการระบบ Exercise Tracker">
+
+    <title>⚙️ Admin - Exercise Tracker</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1 class="header__title">
+            ⚙️ Admin Panel
+        </h1>
+        <p class="header__subtitle">จัดการผู้ใช้และกฏการแข่งขัน</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Add User -->
+        <div class="card">
+            <div class="card__header">
+                <span class="card__icon">👤</span>
+                <span>เพิ่มผู้ใช้ใหม่</span>
+            </div>
+
+            <form id="addUserForm">
+                <div class="form-group">
+                    <label class="form-label" for="newUserName">ชื่อผู้ใช้</label>
+                    <input type="text" class="form-input" id="newUserName" placeholder="กรอกชื่อ" required
+                        maxlength="50">
+                </div>
+
+                <button type="submit" class="btn btn--success" id="addUserBtn">
+                    ➕ เพิ่มผู้ใช้
+                </button>
+            </form>
+        </div>
+
+        <!-- User List -->
+        <div class="card">
+            <div class="card__header">
+                <span class="card__icon">👥</span>
+                <span>รายชื่อผู้ใช้</span>
+            </div>
+
+            <div id="userList">
+                <div class="spinner"></div>
+            </div>
+
+            <div id="emptyUsers" class="empty-state hidden">
+                <div class="empty-state__icon">👻</div>
+                <p class="empty-state__text">ยังไม่มีผู้ใช้</p>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="card">
+            <div class="card__header">
+                <span class="card__icon">📏</span>
+                <span>ตั้งค่ากฏ</span>
+            </div>
+
+            <form id="settingsForm">
+                <div class="form-group">
+                    <label class="form-label" for="maxDays">
+                        จำนวนวันที่อนุญาตให้หยุดออกกำลังกาย
+                    </label>
+                    <input type="number" class="form-input" id="maxDays" value="3" min="1" max="30" required>
+                    <p class="text-muted" style="font-size: 0.75rem; margin-top: 0.5rem;">
+                        หากหยุดเกินจำนวนวันที่กำหนด Streak จะถูก Reset
+                    </p>
+                </div>
+
+                <button type="submit" class="btn btn--primary" id="saveSettingsBtn">
+                    💾 บันทึกการตั้งค่า
+                </button>
+            </form>
+        </div>
+
+        <!-- Activities Management -->
+        <div class="card">
+            <div class="card__header">
+                <span class="card__icon">🏋️</span>
+                <span>จัดการกิจกรรม</span>
+            </div>
+
+            <div id="activitiesList" class="mb-md">
+                <!-- Activities will be loaded here -->
+            </div>
+
+            <form id="addActivityForm">
+                <div class="form-group">
+                    <label class="form-label" for="newActivity">เพิ่มกิจกรรมใหม่</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <select class="form-select" id="newActivityIcon"
+                            style="width: 65px; text-align: center; font-size: 1.2rem;">
+                            <option value="🏃">🏃</option>
+                            <option value="🏃‍♂️">🏃‍♂️</option>
+                            <option value="🚶">🚶</option>
+                            <option value="🚶‍♂️">🚶‍♂️</option>
+                            <option value="🚴">🚴</option>
+                            <option value="🚴‍♂️">🚴‍♂️</option>
+                            <option value="🏊">🏊</option>
+                            <option value="🏊‍♂️">🏊‍♂️</option>
+                            <option value="🏋️">🏋️</option>
+                            <option value="🏋️‍♂️">🏋️‍♂️</option>
+                            <option value="🧘">🧘</option>
+                            <option value="🧘‍♀️">🧘‍♀️</option>
+                            <option value="🤸">🤸</option>
+                            <option value="🤸‍♂️">🤸‍♂️</option>
+                            <option value="🥊">🥊</option>
+                            <option value="🥋">🥋</option>
+                            <option value="⚽">⚽</option>
+                            <option value="🏀">🏀</option>
+                            <option value="🎾">🎾</option>
+                            <option value="🏸">🏸</option>
+                            <option value="🏐">🏐</option>
+                            <option value="⛳">⛳</option>
+                            <option value="🏌️">🏌️</option>
+                            <option value="⛷️">⛷️</option>
+                            <option value="🏂">🏂</option>
+                            <option value="🧗">🧗</option>
+                            <option value="🚣">🚣</option>
+                            <option value="🏇">🏇</option>
+                            <option value="💪">💪</option>
+                            <option value="🎯">🎯</option>
+                            <option value="🔥">🔥</option>
+                            <option value="⭐">⭐</option>
+                            <option value="✨">✨</option>
+                        </select>
+                        <input type="text" class="form-input" id="newActivity" placeholder="ชื่อกิจกรรม" maxlength="30"
+                            style="flex: 1;">
+                        <button type="submit" class="btn btn--success btn--small" style="width: auto; padding: 0 1rem;">
+                            ➕
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="card" style="border: 1px solid var(--accent-primary);">
+            <div class="card__header" style="color: var(--accent-primary);">
+                <span class="card__icon">⚠️</span>
+                <span>Danger Zone</span>
+            </div>
+
+            <button class="btn btn--danger" onclick="resetAllStreaks()">
+                🔄 Reset Streak ทุกคน
+            </button>
+        </div>
+    </main>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 class="modal__title">⚠️ ยืนยันการลบ</h3>
+                <button class="modal__close" onclick="closeDeleteModal()">✕</button>
+            </div>
+            <p id="deleteMessage">คุณต้องการลบผู้ใช้นี้หรือไม่?</p>
+            <p class="text-muted" style="font-size: 0.75rem;">ประวัติการออกกำลังกายทั้งหมดของผู้ใช้นี้จะถูกลบด้วย</p>
+            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                <button class="btn btn--secondary" onclick="closeDeleteModal()">ยกเลิก</button>
+                <button class="btn btn--danger" id="confirmDeleteBtn">ลบ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Streak Modal -->
+    <div class="modal" id="editStreakModal">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 class="modal__title">🔥 ตั้งค่า Streak</h3>
+                <button class="modal__close" onclick="closeEditStreakModal()">✕</button>
+            </div>
+            <p id="editStreakUserName" style="margin-bottom: 1rem; font-weight: 500;"></p>
+            <form id="editStreakForm">
+                <div class="form-group">
+                    <label class="form-label" for="editCurrentStreak">Streak ปัจจุบัน (วัน)</label>
+                    <input type="number" class="form-input" id="editCurrentStreak" min="0" max="9999" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editLongestStreak">Streak สูงสุด (วัน)</label>
+                    <input type="number" class="form-input" id="editLongestStreak" min="0" max="9999" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="editLastExerciseDate">วันที่ออกกำลังกายล่าสุด</label>
+                    <input type="date" class="form-input" id="editLastExerciseDate">
+                </div>
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                    <button type="button" class="btn btn--secondary" onclick="closeEditStreakModal()">ยกเลิก</button>
+                    <button type="submit" class="btn btn--primary">💾 บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Activity Modal -->
+    <div class="modal" id="editActivityModal">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 class="modal__title">✏️ แก้ไขกิจกรรม</h3>
+                <button class="modal__close" onclick="closeEditActivityModal()">×</button>
+            </div>
+            <form id="editActivityForm">
+                <input type="hidden" id="editActivityIndex">
+
+                <div class="form-group">
+                    <label class="form-label">Icon</label>
+                    <select class="form-select" id="editActivityIcon" style="font-size: 1.5rem;">
+                        <option value="🏃">🏃</option>
+                        <option value="🏃‍♂️">🏃‍♂️</option>
+                        <option value="🚶">🚶</option>
+                        <option value="🚶‍♂️">🚶‍♂️</option>
+                        <option value="🚴">🚴</option>
+                        <option value="🚴‍♂️">🚴‍♂️</option>
+                        <option value="🏊">🏊</option>
+                        <option value="🏊‍♂️">🏊‍♂️</option>
+                        <option value="🏋️">🏋️</option>
+                        <option value="🏋️‍♂️">🏋️‍♂️</option>
+                        <option value="🧘">🧘</option>
+                        <option value="🧘‍♀️">🧘‍♀️</option>
+                        <option value="🤸">🤸</option>
+                        <option value="🤸‍♂️">🤸‍♂️</option>
+                        <option value="🥊">🥊</option>
+                        <option value="🥋">🥋</option>
+                        <option value="⚽">⚽</option>
+                        <option value="🏀">🏀</option>
+                        <option value="🎾">🎾</option>
+                        <option value="🏸">🏸</option>
+                        <option value="🏐">🏐</option>
+                        <option value="⛳">⛳</option>
+                        <option value="🏌️">🏌️</option>
+                        <option value="⛷️">⛷️</option>
+                        <option value="🏂">🏂</option>
+                        <option value="🧗">🧗</option>
+                        <option value="🚣">🚣</option>
+                        <option value="🏇">🏇</option>
+                        <option value="💪">💪</option>
+                        <option value="🎯">🎯</option>
+                        <option value="🔥">🔥</option>
+                        <option value="⭐">⭐</option>
+                        <option value="✨">✨</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ชื่อกิจกรรม</label>
+                    <input type="text" class="form-input" id="editActivityName" required>
+                </div>
+
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                    <button type="button" class="btn btn--secondary" onclick="closeEditActivityModal()">ยกเลิก</button>
+                    <button type="submit" class="btn btn--primary">💾 บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h3 class="modal__title">📷 แก้ไขโปรไฟล์</h3>
+                <button class="modal__close" onclick="closeEditProfileModal()">×</button>
+            </div>
+            <form id="editProfileForm">
+                <input type="hidden" id="editProfileUserId">
+
+                <div class="form-group" style="text-align: center;">
+                    <div id="profilePreviewContainer" style="margin-bottom: 1rem;">
+                        <img id="profilePreview"
+                            style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-primary);"
+                            src="" alt="Profile">
+                    </div>
+                    <label class="btn btn--secondary btn--small" style="width: auto; cursor: pointer;">
+                        📷 เลือกรูปภาพ
+                        <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">ชื่อผู้ใช้</label>
+                    <input type="text" class="form-input" id="editProfileName" required>
+                </div>
+
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                    <button type="button" class="btn btn--secondary" onclick="closeEditProfileModal()">ยกเลิก</button>
+                    <button type="submit" class="btn btn--primary">💾 บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="bottom-nav__inner">
+            <a href="index.html" class="bottom-nav__item">
+                <span class="bottom-nav__icon">🏠</span>
+                <span>หน้าแรก</span>
+            </a>
+            <a href="dashboard.html" class="bottom-nav__item">
+                <span class="bottom-nav__icon">📊</span>
+                <span>แดชบอร์ด</span>
+            </a>
+            <a href="history.html" class="bottom-nav__item">
+                <span class="bottom-nav__icon">📋</span>
+                <span>ประวัติ</span>
+            </a>
+            <a href="admin.html" class="bottom-nav__item bottom-nav__item--active">
+                <span class="bottom-nav__icon">⚙️</span>
+                <span>Admin</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Toast Container -->
+    <div class="toast-container"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+    <!-- App Scripts -->
+    <script src="js/firebase-config.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
