@@ -79,6 +79,21 @@
                 <div class="empty-state__icon">📊</div>
                 <p class="empty-state__text">ยังไม่มีข้อมูลน้ำหนัก<br>บันทึกน้ำหนักเพื่อดูกราฟ</p>
             </div>
+
+            <div class="stats-grid" style="margin-top: 1rem; grid-template-columns: repeat(3, 1fr);">
+                <div class="stat-item">
+                    <div class="stat-item__value" id="currentWeightChart" style="font-size: 1.5rem;">--</div>
+                    <div class="stat-item__label">⚖️ น้ำหนัก (kg)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item__value" id="currentMuscle" style="font-size: 1.5rem;">--</div>
+                    <div class="stat-item__label">💪 %กล้ามเนื้อ</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-item__value" id="currentFat" style="font-size: 1.5rem;">--</div>
+                    <div class="stat-item__label">📊 %ไขมัน</div>
+                </div>
+            </div>
         </div>
 
         <!-- Leaderboard -->
@@ -157,6 +172,18 @@
                     <label class="form-label" for="weightInput">น้ำหนัก (kg)</label>
                     <input type="number" class="form-input" id="weightInput" placeholder="เช่น 70.5" step="0.1" min="20"
                         max="300" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="muscleInput">%กล้ามเนื้อ</label>
+                    <input type="number" class="form-input" id="muscleInput" placeholder="เช่น 35.5" step="0.1" min="0"
+                        max="100">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="fatInput">%ไขมัน</label>
+                    <input type="number" class="form-input" id="fatInput" placeholder="เช่น 18.5" step="0.1" min="0"
+                        max="100">
                 </div>
 
                 <div class="form-group">

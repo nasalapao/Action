@@ -255,8 +255,26 @@ async function loadWeightData() {
         const latestWeight = await DB.getLatestWeight(currentUser.id);
 
         if (latestWeight) {
+            // Display in the weight tracking section
             document.getElementById('currentWeight').textContent = latestWeight.weight.toFixed(1);
             document.getElementById('weightDate').textContent = Utils.formatDate(latestWeight.date);
+
+            // Display in the weight chart section
+            document.getElementById('currentWeightChart').textContent = latestWeight.weight.toFixed(1);
+
+            // Display muscle percentage if available
+            if (latestWeight.musclePercent != null) {
+                document.getElementById('currentMuscle').textContent = latestWeight.musclePercent.toFixed(1);
+            } else {
+                document.getElementById('currentMuscle').textContent = '--';
+            }
+
+            // Display fat percentage if available
+            if (latestWeight.fatPercent != null) {
+                document.getElementById('currentFat').textContent = latestWeight.fatPercent.toFixed(1);
+            } else {
+                document.getElementById('currentFat').textContent = '--';
+            }
         }
 
         // Get weight history for chart
@@ -378,6 +396,8 @@ function setupWeightForm() {
         e.preventDefault();
 
         const weight = document.getElementById('weightInput').value;
+        const musclePercent = document.getElementById('muscleInput').value;
+        const fatPercent = document.getElementById('fatInput').value;
 
         if (!weight) {
             Utils.showToast('กรุณากรอกน้ำหนัก', 'error');
@@ -398,8 +418,8 @@ function setupWeightForm() {
                 imageUrl = await DB.uploadImage(compressed);
             }
 
-            // Add weight record
-            await DB.addWeight(currentUser.id, weight, imageUrl);
+            // Add weight record with muscle and fat percentages
+            await DB.addWeight(currentUser.id, weight, imageUrl, musclePercent, fatPercent);
 
             Utils.showToast('บันทึกน้ำหนักสำเร็จ! ⚖️', 'success');
 

@@ -432,13 +432,15 @@ const DB = {
     // ==================== WEIGHT TRACKING ====================
 
     // Add weight record
-    async addWeight(userId, weight, imageUrl = null) {
+    async addWeight(userId, weight, imageUrl = null, musclePercent = null, fatPercent = null) {
         try {
             const today = new Date().toISOString().split('T')[0];
 
             const weightData = {
                 userId: userId,
                 weight: parseFloat(weight),
+                musclePercent: musclePercent ? parseFloat(musclePercent) : null,
+                fatPercent: fatPercent ? parseFloat(fatPercent) : null,
                 imageUrl: imageUrl,
                 date: today,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
